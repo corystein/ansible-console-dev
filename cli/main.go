@@ -5,12 +5,17 @@ import (
 	"log"
 	"net/http"
 
+	// local classes
+	"./util"
+
+	// public modules
 	"github.com/gobuffalo/packr"
 )
 
 var publicAssets = packr.NewBox("../web/public/")
 
 func main() {
+	util.ConfigInit()
 
 	host := flag.String("h", "127.0.0.1", "port to serve on")
 	port := flag.String("p", "3000", "port to serve on")
