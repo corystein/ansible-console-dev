@@ -1,0 +1,46 @@
+version: 2
+
+vars:
+
+tasks:
+  default:
+    cmds:
+      - task: deps
+      - task: build
+    silent: true
+
+  deps:
+    desc: Install dependencies
+    cmds:
+      - echo "Install dependencies..."
+      - task: deps:tools
+      - task: deps:fe
+    silent: true
+
+  deps:tools:
+    desc: Install tools
+    cmds:
+      - echo "Installing dependency tools..."
+      - go get -u github.com/golang/dep/cmd/dep
+      - go get -u github.com/gobuffalo/packr/...
+    silent: true
+
+  deps:fe:
+    desc:
+    cmds:
+      - rm -rf ./dist
+      - mkdir -p ./dist
+      - cp -R ./web/* ./dist
+      - cd ./dist; npm install
+
+  build:
+    desc: Compile CLI
+    dir: cli
+    cmds:
+      - echo "Compiling CLI..."
+      - rm -rf ../bin
+      - mkdir -p ../bin
+      - go build -o ../bin/acron -i ./main.go
+      - chmod 755 ../bin/acron
+      - echo "Compile Complete"
+    silent: true
